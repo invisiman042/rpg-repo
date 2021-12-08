@@ -84,7 +84,7 @@ class Player(Character):
 		'''
 		if self.state != 'normal':
 			print(f'{self.name} can not rest now')
-		elif self.health <:
+		elif self.health <= 0:
 			healing = randint(0, self.max_health - self.health -1)
 			print(f'{self.name} has gained {healing} health')
 			self.health += healing
