@@ -41,7 +41,7 @@ class Player(Character):
 	def help(self):
 		''' returns all commands
 		'''
-		print(commands.keys())
+		print('Command list :', list(commands.keys()))
 
 	def quit(self):
 		''' quit the adventure
@@ -50,7 +50,14 @@ class Player(Character):
 		self.health = 0
 
 	def attack(self):
-		pass
+		if self.state != 'fight':
+			print(f'{self.name} is alone')
+		else:
+			if self.do_damage(self.enemy):
+				print('monster killed, adventurer up')
+			elif self.enemy.do_damage(self):
+				print('adventurer got hit by enemy')
+
 
 	def counter(self):
 		pass
@@ -59,14 +66,19 @@ class Player(Character):
 		if self.state != 'normal':
 			print(f'{self.name} is busy')
 		else:
-			pass
+			self.state = 'fight'
+			self.enemy = Enemy(self)
+			print(f'{self.name} encounters {self.enemy.name, self.enemy.health}')
 
 	def rest(self):
 		''' randomly gain health
 		'''
-		healing = randint(0, self.max_health - self.health -1)
-		print(f'{self.name} has gained {healing} health')
-		self.health += healing
+		if self.state != 'normal':
+			print(f'{self.name} can not recover now')
+		else:
+			healing = randint(0, self.max_health - self.health -1)
+			print(f'{self.name} has gained {healing} health')
+			self.health += healing
 
 def test_main():
 	player = Player()
@@ -93,9 +105,14 @@ commands = {
 }
 
 def main():
-	print('coucou, tout est push sous git')
-	pass
+	player = Player()
+	player.name = 'Hector'#input("Player name :")
+	while player.health > 0:
+		request = input('> ')
+		for command in commands.keys():
+			if command == request:
+				commands[request](player)
 
 if __name__ == '__main__':
-	test_main()
+	# test_main()
 	main()
