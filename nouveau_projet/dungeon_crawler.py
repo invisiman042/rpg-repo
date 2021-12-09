@@ -86,7 +86,7 @@ class Player(Character):
 		if self.state != 'normal':
 			print(f'{self.name} can not recover now')
 		elif self.healing_pot > 0:
-			if self.health = self.max_health:
+			if self.health == self.max_health:
 				print(f'{self.name} is full life')
 			else:
 				healing = randint(0, self.max_health - self.health)
