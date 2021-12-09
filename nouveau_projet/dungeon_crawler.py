@@ -13,10 +13,24 @@ class Character:
 		'''
 		damage = randint(0, 2)
 		enemy.health -= damage
+<<<<<<< HEAD
 		if enemy.health > 0:
 			print(f'!! {self.name} gives {damage} damage(s) to {enemy.name} !!\n{enemy.name} has now {enemy.health}/{enemy.max_health}')
 		else:
 			print(f'{enemy.name} is ded')
+=======
+		
+		if damage == 0:
+			print(f'! {self.name} gives {damage} damage to {enemy.name} !')
+		elif damage == 1:
+			print(f'! {self.name} gives {damage} damage to {enemy.name} !')
+		else:
+			print(f'! {self.name} gives {damage} damage(s) to {enemy.name} !')
+
+		if not enemy.health <= 0:
+			print(f'{enemy.name} has now {enemy.health}/{enemy.max_health}')
+			
+>>>>>>> a4e55596770242bd7f7de4ce622b52d7ccd18d05
 		return enemy.health <= 0
 
 	def status(self):
@@ -59,6 +73,7 @@ class Player(Character):
 		else:
 			if self.do_damage(self.enemy):
 				print('monster killed, adventurer up')
+<<<<<<< HEAD
 				self.state = 'normal'
 				self.max_health += 1
 			elif self.enemy.do_damage(self):
@@ -66,6 +81,13 @@ class Player(Character):
 
 	def counter(self):
 		pass
+=======
+				self.max_health += 1
+				self.state = 'normal'
+				self.help
+			elif self.enemy.do_damage(self):
+				print('adventurer got hit by enemy')
+>>>>>>> a4e55596770242bd7f7de4ce622b52d7ccd18d05
 	
 	def explore(self):
 		if self.state != 'normal':
@@ -76,12 +98,21 @@ class Player(Character):
 			print(f'{self.name} encounters {self.enemy.name, self.enemy.health}')
 
 	def heal(self):
+<<<<<<< HEAD
 		''' randomly gain health
 		'''
 		if self.state != 'normal':
 			print(f'{self.name} can not recover now')
 		elif self.healing_pot > 0:
 			healing = randint(0, self.max_health - self.health)
+=======
+		''' use healing potion
+		'''
+		if self.state != 'normal':
+			print(f'{self.name} can not rest now')
+		elif self.health <= 0:
+			healing = randint(0, self.max_health - self.health -1)
+>>>>>>> a4e55596770242bd7f7de4ce622b52d7ccd18d05
 			print(f'{self.name} has gained {healing} health')
 			self.health += healing
 			self.healing_pot -= 1
@@ -106,7 +137,6 @@ commands = {
 	'help': Player.help,
 	'quit': Player.quit,
 	'attack': Player.attack,
-	'counter': Player.counter,
 	'explore': Player.explore,
 	'status': Player.status,
 	'rest': Player.heal
