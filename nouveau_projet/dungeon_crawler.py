@@ -13,13 +13,16 @@ class Character:
 		'''
 		damage = randint(0, 2)
 		enemy.health -= damage
-		print(f'!! {self.name} gives {damage} damage(s) to {enemy.name} !!\n{enemy.name} has now {enemy.health}/{enemy.max_health}')
+		if enemy.health > 0:
+			print(f'!! {self.name} gives {damage} damage(s) to {enemy.name} !!\n{enemy.name} has now {enemy.health}/{enemy.max_health}')
+		else:
+			print(f'{enemy.name} is ded')
 		return enemy.health <= 0
 
 	def status(self):
 		''' display character name and health
 		'''
-		print(f'{self.name}, {self.health}/{self.max_health}')
+		print(f'{self.name}, {self.health}/{self.max_health}, healing : {self.healing_pot}')
 
 class Enemy(Character):
 	def __init__(self, player):
@@ -37,6 +40,7 @@ class Player(Character):
 		self.state = 'normal'
 		self.max_health = 10
 		self.health = self.max_health
+		self.healing_pot = 2
 
 	def help(self):
 		''' returns all commands
@@ -55,9 +59,10 @@ class Player(Character):
 		else:
 			if self.do_damage(self.enemy):
 				print('monster killed, adventurer up')
+				self.state = 'normal'
+				self.max_health += 1
 			elif self.enemy.do_damage(self):
-				print('adventurer got hit by enemy')
-
+				print('adventurer got kill by enemy')
 
 	def counter(self):
 		pass
@@ -70,15 +75,18 @@ class Player(Character):
 			self.enemy = Enemy(self)
 			print(f'{self.name} encounters {self.enemy.name, self.enemy.health}')
 
-	def rest(self):
+	def heal(self):
 		''' randomly gain health
 		'''
 		if self.state != 'normal':
 			print(f'{self.name} can not recover now')
-		else:
-			healing = randint(0, self.max_health - self.health -1)
+		elif self.healing_pot > 0:
+			healing = randint(0, self.max_health - self.health)
 			print(f'{self.name} has gained {healing} health')
 			self.health += healing
+			self.healing_pot -= 1
+		else:
+			print(f'{self.name} has no more healing potion')
 
 def test_main():
 	player = Player()
@@ -101,7 +109,7 @@ commands = {
 	'counter': Player.counter,
 	'explore': Player.explore,
 	'status': Player.status,
-	'rest': Player.rest
+	'rest': Player.heal
 }
 
 def main():
