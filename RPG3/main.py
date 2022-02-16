@@ -14,6 +14,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('Arial', 32)
         self.running = True
+        self.font = pygame.font.SysFont()
 
         self.character_spritesheet = SpriteSheet('img/character.png')
         self.terrain_spritesheet = SpriteSheet('img/terrain.png')

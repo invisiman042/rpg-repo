@@ -28,22 +28,15 @@ class Player(Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
-        self.in_collision = False
-
     def update(self):
         self.move()
         self.animate()
+        self.collide_enemy()
 
         self.rect.x += self.x_change
         self.collide_blocks('x')
         self.rect.y += self.y_change
         self.collide_blocks('y')
-
-        if not self.in_collision:
-            self.collide_enemy()
-        else:
-            pygame.time.set_timer(self.timer(), 1000)
-
 
         self.x_change = 0
         self.y_change = 0
@@ -51,15 +44,23 @@ class Player(Sprite):
     def move(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.x += PLAYER_SPEED
             self.x_change -= PLAYER_SPEED
             self.facing = 'LEFT'
         if keys[pygame.K_RIGHT]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.x -= PLAYER_SPEED
             self.x_change += PLAYER_SPEED
             self.facing = 'RIGHT'
         if keys[pygame.K_UP]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.y += PLAYER_SPEED
             self.y_change -= PLAYER_SPEED
             self.facing = 'UP'
         if keys[pygame.K_DOWN]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.y -= PLAYER_SPEED
             self.y_change += PLAYER_SPEED
             self.facing = 'DOWN'
 
@@ -91,8 +92,8 @@ class Player(Sprite):
 
         hits = spritecollide(self, self.game.enemies, False)
         if hits:
-            print('hit')
-            self.in_collision = True
+            self.kill()
+            self.game.playing = False
 
     def animate(self):
         down_animations = [self.game.character_spritesheet.get_sprite(ANIM_DOWN1, self.width, self.height),
