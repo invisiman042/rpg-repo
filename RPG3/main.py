@@ -1,3 +1,4 @@
+# Importations
 import pygame
 from pygame.sprite import Sprite, LayeredUpdates
 from sprites import *
